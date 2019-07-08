@@ -48,7 +48,7 @@ Counter
       {% set text_color = 'red' %}
     {% endif %}
     <h5 id="{{logitem['time']}}">{{logitem['time']}}</h5>
-    <p style="color: {{text_color}}">You {{gain_loss}} {{gold_gained}} gold by visiting the {{logitem['activity']}} </p>
+    <p style="color: {{text_color}}">You {{gain_loss}} {{gold_gained}} gold at the {{logitem['activity']}} </p>
   {% endfor %}
 </div>
 
