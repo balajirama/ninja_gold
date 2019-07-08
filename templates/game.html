@@ -1,0 +1,47 @@
+{% extends "master.html" %}
+
+{% block title %}
+Counter
+{% endblock %}
+
+{% block content %}
+<div class="jumbotron text-center">
+  <h1 class="display-4 mb-5">Welcome to the Great Number Game!</h1>
+  {% if session['message'] == 'start' %}
+    <p class="lead">I am thinking of a number between 1 and 100</p>
+    <p class="lead">Guess what it is!</p>
+  {% elif session['message'] == 'high' %}
+    <p class="lead">Sorry! Too high</p>
+  {% elif session['message'] == 'low' %}
+    <p class="lead">Oooh! Too low!</p>
+  {% elif session['message'] == 'match' %}
+    <p class="lead">Exactly! I thought of {{session['number']}}</p>
+    <p class="lead">You guessed that in {{session['trials']}} trials!</p>
+    <a class="btn btn-lg btn-primary" href="/restart">Play again</a>
+  {% endif %}
+  {% if session['wasted'] %}
+    <p class="lead">Wait, didn't you try {{session['guess']}} earlier?</p>
+  {% endif %}
+</div>
+
+{% if session['message'] != 'match' %}
+<div style="margin-left: 40%;margin-right: 40%;">
+  <form action="/guess" method="post">
+    <div class="row">
+      <div class="col">
+        <input type="number" name="guess" class="form-control form-control-lg" placeholder="{{session['placeholder']}}">
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <button type="submit" class="my-5 btn btn-primary btn-block btn-lg">Is it this?</button>
+      </div>
+    </div>
+  </form>
+</div>
+{% endif %}
+{% endblock %}
+
+{% block footer %}
+{% endblock %}
+
