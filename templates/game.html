@@ -50,6 +50,10 @@ Counter
     <h5 id="{{logitem['time']}}">{{logitem['time']}}</h5>
     <p style="color: {{text_color}}">You {{gain_loss}} {{gold_gained}} gold at the {{logitem['activity']}} </p>
   {% endfor %}
+  {% if activity_log[0] is not defined %}
+    <h5>Welcome</h5>
+    <p>Try your luck above and reach 1000 gold as soon as possible</p>
+  {% endif %}
 </div>
 
 {% endblock %}
