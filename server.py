@@ -26,9 +26,9 @@ def root():
 def process_money():
     now = datetime.datetime.now()
     act = request.form['activity']
-    session['gain'] = random.randint(DATA[act][0], DATA[act][1])
-    session['total_gold'] += session['gain']
-    session['log'].append({'activity': act, 'time': now.strftime("%B %d, %Y at %I:%M:%S%p"), 'gain': session['gain']})
+    gain = random.randint(DATA[act][0], DATA[act][1])
+    session['total_gold'] += gain
+    session['log'].append({'activity': act, 'time': now.strftime("%B %d, %Y at %I:%M:%S%p"), 'gain': gain})
     return redirect("/")
 
 @app.route("/reset")
