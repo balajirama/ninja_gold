@@ -12,31 +12,31 @@ Counter
 
 <div class="row">
   {% for avenue in DATA.keys() %}
-  {% if DATA[avenue][0] > 0 %}
-    {% set earn_lose = 'earn' %}
-    {% set min_gain = DATA[avenue][0] %}
-  {% else %}
-    {% set earn_lose = 'earn or lose' %}
-    {% set min_gain = 0 %}
-  {% endif %}
-  {% set image_path = 'img/'+avenue+'.jpg' %}
-  <div class="col mx-1">
-    <div class="card" style="width: 19rem;">
-      <img src="{{ url_for('static', filename=image_path) }}" class="card-img-top" alt="{{avenue}}.jpg">
-      <div class="card-body text-center">
-        <h5 class="card-title">{{ avenue|capitalize }}</h5>
-        <p class="card-text">You can {{earn_lose}} between {{min_gain}} and {{DATA[avenue][1]}} gold in this {{avenue}}.</p>
-        <form action="/process_money" method="post">
-          <input type="hidden" name="activity" value="{{avenue}}">
-          <button type="submit" class="btn btn-primary">Try this</button>
-        </form>
+    {% if DATA[avenue][0] > 0 %}
+      {% set earn_lose = 'earn' %}
+      {% set min_gain = DATA[avenue][0] %}
+    {% else %}
+      {% set earn_lose = 'earn or lose' %}
+      {% set min_gain = 0 %}
+    {% endif %}
+    {% set image_path = 'img/'+avenue+'.jpg' %}
+    <div class="col mx-1">
+      <div class="card" style="width: 19rem;">
+        <img src="{{ url_for('static', filename=image_path) }}" class="card-img-top" alt="{{avenue}}.jpg">
+        <div class="card-body text-center">
+          <h5 class="card-title">{{ avenue|capitalize }}</h5>
+          <p class="card-text">You can {{earn_lose}} between {{min_gain}} and {{DATA[avenue][1]}} gold in this {{avenue}}.</p>
+          <form action="/process_money" method="post">
+            <input type="hidden" name="activity" value="{{avenue}}">
+            <button type="submit" class="btn btn-primary">Try this</button>
+          </form>
+        </div>
       </div>
     </div>
-  </div>
   {% endfor %}
 </div>
 
-<div class="overflow-auto" style="height: 150px">
+<div class="overflow-auto mx-5" style="height: 150px;border:1px solid gray;border-radius: 4px;">
   {% for logitem in activity_log %}
     {% if logitem['gain'] > 0 %}
       {% set gain_loss = 'earned' %}
