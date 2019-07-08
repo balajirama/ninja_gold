@@ -22,7 +22,7 @@ Counter
     {% set image_path = 'img/'+avenue+'.jpg' %}
     <div class="col mx-1">
       <div class="card" style="width: 19rem;">
-        <img src="{{ url_for('static', filename=image_path) }}" class="card-img-top" alt="{{avenue}}.jpg">
+        <img src="{{ url_for('static', filename=image_path) }}" class="card-img-top rounded" alt="{{avenue}}.jpg">
         <div class="card-body text-center">
           <h5 class="card-title">{{ avenue|capitalize }}</h5>
           <p class="card-text">You can {{earn_lose}} between {{min_gain}} and {{DATA[avenue][1]}} gold in this {{avenue}}.</p>
