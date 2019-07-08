@@ -5,8 +5,9 @@ Counter
 {% endblock %}
 
 {% block content %}
-<div class="jumbotron text-center">
-  <h1 class="display-4 mb-5">Welcome to Ninja Gold!</h1>
+<div class="text-center">
+  <h2 class="mb-1">Welcome to Ninja Gold!</h2>
+  <p class="lead">You have {{session['total_gold']}} gold</p>
 </div>
 
 <div class="row">
@@ -22,15 +23,33 @@ Counter
   <div class="col mx-1">
     <div class="card" style="width: 19rem;">
       <img src="{{ url_for('static', filename=image_path) }}" class="card-img-top" alt="{{avenue}}.jpg">
-      <div class="card-body">
+      <div class="card-body text-center">
         <h5 class="card-title">{{ avenue|capitalize }}</h5>
         <p class="card-text">You can {{earn_lose}} between {{min_gain}} and {{DATA[avenue][1]}} gold in this {{avenue}}.</p>
-        <a href="/process_money" class="btn btn-primary">Do this</a>
+        <form action="/process_money" method="post">
+          <input type="hidden" name="activity" value="{{avenue}}">
+          <button type="submit" class="btn btn-primary">Try this</button>
+        </form>
       </div>
     </div>
   </div>
   {% endfor %}
+</div>
 
+<div class="overflow-auto" style="height: 150px">
+  {% for logitem in activity_log %}
+    {% if logitem['gain'] > 0 %}
+      {% set gain_loss = 'earned' %}
+      {% set gold_gained = logitem['gain'] %}
+      {% set text_color  = 'green' %}
+    {% else %}
+      {% set gain_loss = 'lost' %}
+      {% set gold_gained = -logitem['gain'] %}
+      {% set text_color = 'red' %}
+    {% endif %}
+    <h5 id="{{logitem['time']}}">{{logitem['time']}}</h5>
+    <p style="color: {{text_color}}">You {{gain_loss}} {{gold_gained}} gold by visiting the {{logitem['activity']}} </p>
+  {% endfor %}
 </div>
 
 {% endblock %}

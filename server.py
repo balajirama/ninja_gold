@@ -4,6 +4,7 @@ app = Flask(__name__)
 app.secret_key = 'darksecret'
 
 import random
+import datetime
 
 DATA = {
     'farm':[10,20],
@@ -14,10 +15,25 @@ DATA = {
 
 @app.route("/")
 def root():
-    return render_template("game.html", DATA=DATA)
+    if 'total_gold' not in session:
+        session['total_gold'] = 0
+        session['log'] = list()
+    activity_log = session['log']
+    activity_log.reverse()
+    return render_template("game.html", DATA=DATA, activity_log=activity_log)
 
 @app.route("/process_money", methods=['POST'])
 def process_money():
+    now = datetime.datetime.now()
+    act = request.form['activity']
+    session['gain'] = random.randint(DATA[act][0], DATA[act][1])
+    session['total_gold'] += session['gain']
+    session['log'].append({'activity': act, 'time': now.strftime("%B %d, %Y at %I:%M:%S%p"), 'gain': session['gain']})
+    return redirect("/")
+
+@app.route("/reset")
+def reset():
+    session.clear()
     return redirect("/")
 
 if __name__ == '__main__':
