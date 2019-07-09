@@ -10,33 +10,40 @@ Counter
   <p class="lead">You have {{session['total_gold']}} gold</p>
 </div>
 
-<div class="row">
-  {% for avenue in DATA.keys() %}
-    {% if DATA[avenue][0] > 0 %}
-      {% set earn_lose = 'earn' %}
-      {% set min_gain = DATA[avenue][0] %}
-    {% else %}
-      {% set earn_lose = 'earn or lose' %}
-      {% set min_gain = 0 %}
-    {% endif %}
-    {% set image_path = 'img/'+avenue+'.jpg' %}
-    <div class="col mx-1">
-      <div class="card" style="width: 19rem;">
-        <img src="{{ url_for('static', filename=image_path) }}" class="card-img-top rounded" alt="{{avenue}}.jpg">
-        <div class="card-body text-center">
-          <h5 class="card-title">{{ avenue|capitalize }}</h5>
-          <p class="card-text">You can {{earn_lose}} between {{min_gain}} and {{DATA[avenue][1]}} gold in this {{avenue}}.</p>
-          <form action="/process_money" method="post">
-            <input type="hidden" name="activity" value="{{avenue}}">
-            <button type="submit" class="btn btn-primary">Try my luck</button>
-          </form>
+<div class="container-fluid">
+  <div class="row justify-content-center">
+    {% for avenue in DATA.keys() %}
+      {% if DATA[avenue][0] > 0 %}
+        {% set earn_lose = 'earn' %}
+        {% set min_gain = DATA[avenue][0] %}
+      {% else %}
+        {% set earn_lose = 'earn or lose' %}
+        {% set min_gain = 0 %}
+      {% endif %}
+      {% set image_path = 'img/'+avenue+'.jpg' %}
+      <div class="col">
+        <div class="card" style="width: 19rem;">
+          <img src="{{ url_for('static', filename=image_path) }}" class="card-img-top rounded" alt="{{avenue}}.jpg">
+          <div class="card-body text-center">
+            <h5 class="card-title">{{ avenue|capitalize }}</h5>
+            <p class="card-text text-muted text-small">
+              <small>
+                {{earn_lose|capitalize}} {{min_gain}} to {{DATA[avenue][1]}} gold.
+              </small>
+            </p>
+            <form action="/process_money" method="post">
+              <input type="hidden" name="activity" value="{{avenue}}">
+              <button type="submit" class="btn btn-primary">Try my luck</button>
+            </form>
+          </div>
         </div>
       </div>
-    </div>
-  {% endfor %}
+    {% endfor %}
+  </div>
 </div>
 
-<div class="overflow-auto mx-5" style="height: 150px;border:1px solid gray;border-radius: 4px;">
+<div class="overflow-auto mx-5" style="height: 240px;border:1px solid gray;border-radius: 4px;">
+  <p>Try your luck and reach 1000 gold as soon as possible</p>
   {% for logitem in activity_log %}
     {% if logitem['gain'] > 0 %}
       {% set gain_loss = 'earned' %}
@@ -47,13 +54,11 @@ Counter
       {% set gold_gained = -logitem['gain'] %}
       {% set text_color = 'red' %}
     {% endif %}
-    <h5 id="{{logitem['time']}}">{{logitem['time']}}</h5>
-    <p style="color: {{text_color}}">You {{gain_loss}} {{gold_gained}} gold at the {{logitem['activity']}} </p>
+    <small class="text-muted" id="{{logitem['time']}}">{{logitem['time']}}</small>
+    <p style="color: {{text_color}}">
+      You {{gain_loss}} {{gold_gained}} gold at the {{logitem['activity']}}
+    </p>
   {% endfor %}
-  {% if activity_log[0] is not defined %}
-    <h5>Welcome</h5>
-    <p>Try your luck above and reach 1000 gold as soon as possible</p>
-  {% endif %}
 </div>
 
 {% endblock %}
